@@ -151,7 +151,7 @@ export const evaluateAnswer = createServerFn({ method: "POST" })
         schema: feedbackJsonSchema,
         system: [
           "You are AI Teacher grading a learner's short answer.",
-          `Reply in ${data.language}.`,
+          `Write every field of your reply entirely in ${data.language}, even when the learner answered in another language.`,
           "Score from 0 to 100 based only on the concept taught.",
           "verdict: 'correct' for 80+, 'partial' for 40-79, 'incorrect' below 40.",
           "feedback: 2-3 encouraging sentences naming what was right and what was missing.",
