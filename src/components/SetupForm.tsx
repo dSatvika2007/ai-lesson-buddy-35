@@ -123,7 +123,15 @@ export function SetupForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="material">Study material (optional)</Label>
+            <Label htmlFor="material">
+              {reviewNotice ? "Review the text from your file" : "Study material (optional)"}
+            </Label>
+            {reviewNotice && (
+              <p className="text-xs text-muted-foreground">
+                This is the text pulled out of your file. Fix anything that looks jumbled or delete parts you
+                don't want taught — the lesson is built from exactly what's here.
+              </p>
+            )}
             <Textarea
               id="material"
               placeholder="Paste your notes, chapter text or transcript here…"
@@ -133,24 +141,35 @@ export function SetupForm({
                 setSourceText(e.target.value.slice(0, MAX_CHARS));
                 setFileName(null);
               }}
-              disabled={loading}
+              disabled={loading || extracting}
             />
             <div className="flex flex-wrap items-center gap-3">
               <input
                 ref={fileInput}
                 type="file"
-                accept=".txt,.md,.markdown,.csv,.json,text/plain"
+                accept=".pdf,application/pdf,.txt,.md,.markdown,.csv,.json,text/plain"
                 className="hidden"
-                onChange={(e) => void handleFile(e.target.files?.[0])}
+                onChange={(e) => {
+                  void handleFile(e.target.files?.[0]);
+                  e.target.value = "";
+                }}
               />
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                disabled={loading}
+                disabled={loading || extracting}
                 onClick={() => fileInput.current?.click()}
               >
-                <Upload className="mr-2 size-4" /> Upload a text file
+                {extracting ? (
+                  <>
+                    <Loader2 className="mr-2 size-4 animate-spin" /> Reading your PDF…
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mr-2 size-4" /> Upload a PDF or text file
+                  </>
+                )}
               </Button>
               {fileName && (
                 <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs">
@@ -161,12 +180,14 @@ export function SetupForm({
                     onClick={() => {
                       setFileName(null);
                       setSourceText("");
+                      setReviewNotice(false);
                     }}
                   >
                     <X className="size-3.5" />
                   </button>
                 </span>
               )}
+
               <span className="text-xs text-muted-foreground">
                 {sourceText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} characters
               </span>
