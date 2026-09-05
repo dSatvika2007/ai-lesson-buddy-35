@@ -38,7 +38,7 @@ export function IntroVideo({ title }: { title?: string }) {
       </div>
       <div className="flex items-center justify-between gap-3 border-t px-4 py-3">
         <p className="text-sm font-medium">{title ? `Intro · ${title}` : "Lesson intro"}</p>
-        <span className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">Placeholder</span>
+        <span className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">Video</span>
       </div>
     </section>
   );
