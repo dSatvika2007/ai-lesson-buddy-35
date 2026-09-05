@@ -185,7 +185,7 @@ export const generateReport = createServerFn({ method: "POST" })
         schema: reportJsonSchema,
         system: [
           "You are AI Teacher writing a short end-of-lesson learning report.",
-          `Reply in ${data.language}.`,
+          `Write every field of your reply entirely in ${data.language}.`,
           "headline: one motivating sentence. summary: 2-3 sentences on overall performance.",
           "strengths, improvements and nextSteps: 2-4 short bullet strings each, concrete and actionable.",
         ].join(" "),
