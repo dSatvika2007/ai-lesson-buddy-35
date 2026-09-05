@@ -148,12 +148,9 @@ export function SetupForm({
             <Textarea
               id="material"
               placeholder="Paste your notes, chapter text or transcript here…"
-              className="min-h-40 resize-y"
+              className={reviewNotice ? "min-h-72 resize-y font-mono text-[13px] leading-relaxed" : "min-h-40 resize-y"}
               value={sourceText}
-              onChange={(e) => {
-                setSourceText(e.target.value.slice(0, MAX_CHARS));
-                setFileName(null);
-              }}
+              onChange={(e) => setSourceText(e.target.value.slice(0, MAX_CHARS))}
               disabled={loading || extracting}
             />
             <div className="flex flex-wrap items-center gap-3">
@@ -283,7 +280,7 @@ export function SetupForm({
             />
           </div>
 
-          <Button type="submit" className="w-full" size="lg" disabled={loading || extracting}>
+          <Button type="submit" className="w-full" size="lg" disabled={blocked}>
             {loading ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" /> Building your lesson…
