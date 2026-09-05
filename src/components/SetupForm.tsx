@@ -28,7 +28,10 @@ export function SetupForm({
   const [language, setLanguage] = useState("English");
   const [conceptCount, setConceptCount] = useState(4);
   const [quizCount, setQuizCount] = useState(5);
+  const [extracting, setExtracting] = useState(false);
+  const [reviewNotice, setReviewNotice] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
+
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
