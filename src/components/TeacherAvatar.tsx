@@ -1,13 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { Pause, Play, Square, Volume2, VolumeX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+
+const LANG_TAGS: Record<string, string> = {
+  hindi: "hi-IN",
+  english: "en-US",
+};
 
 /**
  * Friendly speaking avatar that reads the current concept aloud
  * with the browser's built-in speech synthesis.
  */
-export function TeacherAvatar({ text, title }: { text: string; title?: string }) {
+export function TeacherAvatar({
+  text,
+  title,
+  language = "English",
+}: {
+  text: string;
+  title?: string;
+  language?: string;
+}) {
   const [supported, setSupported] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [paused, setPaused] = useState(false);
