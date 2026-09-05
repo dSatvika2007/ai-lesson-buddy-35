@@ -40,6 +40,12 @@ export function TeacherAvatar({
     if (!clean) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(clean);
+    const tag = LANG_TAGS[language.trim().toLowerCase()] ?? "en-US";
+    utterance.lang = tag;
+    const voice = window.speechSynthesis
+      .getVoices()
+      .find((v) => v.lang?.toLowerCase().startsWith(tag.slice(0, 2)));
+    if (voice) utterance.voice = voice;
     utterance.rate = 0.98;
     utterance.pitch = 1.02;
     utterance.onstart = () => {
