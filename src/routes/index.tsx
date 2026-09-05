@@ -240,7 +240,7 @@ function Index() {
                 key={conceptIndex}
                 title={lesson.concepts[conceptIndex]!.title}
                 text={lesson.concepts[conceptIndex]!.explanation}
-                language={settings?.language}
+                language={settings?.language ?? "English"}
               />
             )}
             <IntroVideo title={lesson.title} />
