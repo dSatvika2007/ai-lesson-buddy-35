@@ -9,3 +9,5 @@
 - [ ] Final learning report
 - [ ] PDF upload: extract readable text, clean/normalize, show for review/edit,
       feed clean text into lesson generation; clear error for scanned PDFs
+- [ ] Extracted-text editor: spacious editable preview, word + character count,
+      Start Lesson uses edited text, blocked while extracting or empty
