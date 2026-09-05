@@ -109,7 +109,7 @@ export const generateLesson = createServerFn({ method: "POST" })
         schema: lessonJsonSchema,
         system: [
           "You are AI Teacher, an expert tutor who designs structured micro-lessons.",
-          `Write everything in ${data.language} for a ${data.level} learner.`,
+          `Write EVERY piece of text in ${data.language}: lesson title, overview, concept titles, explanations, key points, understanding-check questions, and all quiz questions, options and explanations. Do not mix in any other language except unavoidable technical terms. Target a ${data.level} learner.`,
           depth,
           `Produce exactly ${data.conceptCount} concepts, ordered from foundational to advanced.`,
           "Each concept needs 3-4 key points and one open-ended understanding-check question the learner answers in a few sentences.",
