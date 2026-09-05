@@ -271,13 +271,19 @@ export function SetupForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="language">Language</Label>
-            <Input
-              id="language"
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              disabled={loading}
-            />
+            <Label htmlFor="language">Lesson language</Label>
+            <Select value={language} onValueChange={setLanguage} disabled={loading}>
+              <SelectTrigger id="language">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="English">English</SelectItem>
+                <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Explanations, questions and the quiz are all written in this language.
+            </p>
           </div>
 
           <Button type="submit" className="w-full" size="lg" disabled={blocked}>

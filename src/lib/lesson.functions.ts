@@ -109,7 +109,7 @@ export const generateLesson = createServerFn({ method: "POST" })
         schema: lessonJsonSchema,
         system: [
           "You are AI Teacher, an expert tutor who designs structured micro-lessons.",
-          `Write everything in ${data.language} for a ${data.level} learner.`,
+          `Write EVERY piece of text in ${data.language}: lesson title, overview, concept titles, explanations, key points, understanding-check questions, and all quiz questions, options and explanations. Do not mix in any other language except unavoidable technical terms. Target a ${data.level} learner.`,
           depth,
           `Produce exactly ${data.conceptCount} concepts, ordered from foundational to advanced.`,
           "Each concept needs 3-4 key points and one open-ended understanding-check question the learner answers in a few sentences.",
@@ -151,7 +151,7 @@ export const evaluateAnswer = createServerFn({ method: "POST" })
         schema: feedbackJsonSchema,
         system: [
           "You are AI Teacher grading a learner's short answer.",
-          `Reply in ${data.language}.`,
+          `Write every field of your reply entirely in ${data.language}, even when the learner answered in another language.`,
           "Score from 0 to 100 based only on the concept taught.",
           "verdict: 'correct' for 80+, 'partial' for 40-79, 'incorrect' below 40.",
           "feedback: 2-3 encouraging sentences naming what was right and what was missing.",
@@ -185,7 +185,7 @@ export const generateReport = createServerFn({ method: "POST" })
         schema: reportJsonSchema,
         system: [
           "You are AI Teacher writing a short end-of-lesson learning report.",
-          `Reply in ${data.language}.`,
+          `Write every field of your reply entirely in ${data.language}.`,
           "headline: one motivating sentence. summary: 2-3 sentences on overall performance.",
           "strengths, improvements and nextSteps: 2-4 short bullet strings each, concrete and actionable.",
         ].join(" "),

@@ -1,13 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { Pause, Play, Square, Volume2, VolumeX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+
+const LANG_TAGS: Record<string, string> = {
+  hindi: "hi-IN",
+  english: "en-US",
+};
 
 /**
  * Friendly speaking avatar that reads the current concept aloud
  * with the browser's built-in speech synthesis.
  */
-export function TeacherAvatar({ text, title }: { text: string; title?: string }) {
+export function TeacherAvatar({
+  text,
+  title,
+  language = "English",
+}: {
+  text: string;
+  title?: string;
+  language?: string;
+}) {
   const [supported, setSupported] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -27,6 +40,12 @@ export function TeacherAvatar({ text, title }: { text: string; title?: string })
     if (!clean) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(clean);
+    const tag = LANG_TAGS[language.trim().toLowerCase()] ?? "en-US";
+    utterance.lang = tag;
+    const voice = window.speechSynthesis
+      .getVoices()
+      .find((v) => v.lang?.toLowerCase().startsWith(tag.slice(0, 2)));
+    if (voice) utterance.voice = voice;
     utterance.rate = 0.98;
     utterance.pitch = 1.02;
     utterance.onstart = () => {
@@ -43,7 +62,7 @@ export function TeacherAvatar({ text, title }: { text: string; title?: string })
     };
     utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
-  }, [text]);
+  }, [text, language]);
 
   // Auto-read whenever a new concept appears.
   useEffect(() => {
@@ -118,25 +137,40 @@ export function TeacherAvatar({ text, title }: { text: string; title?: string })
         </p>
       </div>
 
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={toggle}
-        disabled={!supported}
-        aria-label={animating ? "Pause narration" : "Play narration"}
-      >
-        {!supported ? (
-          <VolumeX className="size-4" />
-        ) : animating ? (
-          <Pause className="size-4" />
-        ) : speaking && paused ? (
-          <Play className="size-4" />
-        ) : (
-          <Volume2 className="size-4" />
-        )}
-        <span className="ml-2">{animating ? "Pause" : paused ? "Resume" : "Play"}</span>
-      </Button>
+      <div className="flex shrink-0 items-center gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={toggle}
+          disabled={!supported}
+          aria-label={animating ? "Pause narration" : "Play narration"}
+        >
+          {!supported ? (
+            <VolumeX className="size-4" />
+          ) : animating ? (
+            <Pause className="size-4" />
+          ) : speaking && paused ? (
+            <Play className="size-4" />
+          ) : (
+            <Volume2 className="size-4" />
+          )}
+          <span className="ml-2 hidden sm:inline">
+            {animating ? "Pause" : paused ? "Resume" : "Play"}
+          </span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={stop}
+          disabled={!supported || !speaking}
+          aria-label="Stop narration"
+        >
+          <Square className="size-4" />
+          <span className="ml-2 hidden sm:inline">Stop</span>
+        </Button>
+      </div>
     </section>
   );
 }
