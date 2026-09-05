@@ -32,26 +32,60 @@ export function SetupForm({
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
+    const isPdf = /\.pdf$/i.test(file.name) || file.type === "application/pdf";
     const isText = /\.(txt|md|markdown|csv|json)$/i.test(file.name) || file.type.startsWith("text/");
-    if (!isText) {
+
+    if (!isPdf && !isText) {
       toast.error("That file type isn't supported yet", {
-        description: "Upload a .txt or .md file, or paste your notes into the box below.",
+        description: "Upload a PDF, .txt or .md file, or paste your notes into the box below.",
       });
       return;
     }
-    if (file.size > 2_000_000) {
-      toast.error("That file is too large", { description: "Please use a file under 2 MB." });
+    if (file.size > (isPdf ? 25_000_000 : 2_000_000)) {
+      toast.error("That file is too large", {
+        description: isPdf ? "Please use a PDF under 25 MB." : "Please use a file under 2 MB.",
+      });
       return;
     }
+
+    if (isPdf) {
+      setExtracting(true);
+      try {
+        const { extractPdfText, PdfExtractionError } = await import("@/lib/pdf-text");
+        try {
+          const { text, pages } = await extractPdfText(file);
+          setSourceText(text.slice(0, MAX_CHARS));
+          setFileName(file.name);
+          setReviewNotice(true);
+          toast.success(`Read ${pages} page${pages === 1 ? "" : "s"} from ${file.name}`, {
+            description: "Check the text below and edit anything that looks off.",
+          });
+        } catch (error) {
+          if (error instanceof PdfExtractionError) {
+            toast.error("Couldn't read this PDF", { description: error.message });
+          } else {
+            toast.error("Couldn't read this PDF", {
+              description: "Something went wrong reading the file. Try again or paste the text instead.",
+            });
+          }
+        }
+      } finally {
+        setExtracting(false);
+      }
+      return;
+    }
+
     try {
       const text = await file.text();
       setSourceText(text.slice(0, MAX_CHARS));
       setFileName(file.name);
+      setReviewNotice(true);
       toast.success(`Loaded ${file.name}`);
     } catch {
       toast.error("The file could not be read. Try pasting the text instead.");
     }
   }
+
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
