@@ -5,7 +5,8 @@ import { PlayCircle } from "lucide-react";
  * Drop a link into INTRO_VIDEO_URL (YouTube/Vimeo embed URL or an .mp4 file)
  * and the player renders automatically.
  */
-const INTRO_VIDEO_URL = "";
+const INTRO_VIDEO_URL =
+  "https://projects-results.d-id.com/google-oauth2%7C110187163811411333059/prj_IcUK7gQF5R4j5gbJW73vG/result.mp4";
 
 export function IntroVideo({ title }: { title?: string }) {
   const isFile = /\.(mp4|webm|ogg)(\?|$)/i.test(INTRO_VIDEO_URL);
