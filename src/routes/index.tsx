@@ -234,6 +234,13 @@ function Index() {
               <h1 className="font-display text-4xl leading-tight">{lesson.title}</h1>
               <p className="text-sm text-muted-foreground">{lesson.overview}</p>
             </div>
+            {stage === "lesson" && lesson.concepts[conceptIndex] && (
+              <TeacherAvatar
+                key={conceptIndex}
+                title={lesson.concepts[conceptIndex]!.title}
+                text={lesson.concepts[conceptIndex]!.explanation}
+              />
+            )}
             <IntroVideo title={lesson.title} />
           </>
         )}
