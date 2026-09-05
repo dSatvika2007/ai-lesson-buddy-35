@@ -62,7 +62,7 @@ export function TeacherAvatar({
     };
     utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
-  }, [text]);
+  }, [text, language]);
 
   // Auto-read whenever a new concept appears.
   useEffect(() => {
@@ -137,25 +137,40 @@ export function TeacherAvatar({
         </p>
       </div>
 
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={toggle}
-        disabled={!supported}
-        aria-label={animating ? "Pause narration" : "Play narration"}
-      >
-        {!supported ? (
-          <VolumeX className="size-4" />
-        ) : animating ? (
-          <Pause className="size-4" />
-        ) : speaking && paused ? (
-          <Play className="size-4" />
-        ) : (
-          <Volume2 className="size-4" />
-        )}
-        <span className="ml-2">{animating ? "Pause" : paused ? "Resume" : "Play"}</span>
-      </Button>
+      <div className="flex shrink-0 items-center gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={toggle}
+          disabled={!supported}
+          aria-label={animating ? "Pause narration" : "Play narration"}
+        >
+          {!supported ? (
+            <VolumeX className="size-4" />
+          ) : animating ? (
+            <Pause className="size-4" />
+          ) : speaking && paused ? (
+            <Play className="size-4" />
+          ) : (
+            <Volume2 className="size-4" />
+          )}
+          <span className="ml-2 hidden sm:inline">
+            {animating ? "Pause" : paused ? "Resume" : "Play"}
+          </span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={stop}
+          disabled={!supported || !speaking}
+          aria-label="Stop narration"
+        >
+          <Square className="size-4" />
+          <span className="ml-2 hidden sm:inline">Stop</span>
+        </Button>
+      </div>
     </section>
   );
 }
