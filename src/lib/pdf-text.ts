@@ -35,7 +35,7 @@ export async function extractPdfText(file: File): Promise<{ text: string; pages:
   let doc;
   try {
     const data = new Uint8Array(await file.arrayBuffer());
-    doc = await pdfjs.getDocument({ data, isEvalSupported: false }).promise;
+    doc = await pdfjs.getDocument({ data }).promise;
   } catch {
     throw new PdfExtractionError(
       "This PDF couldn't be opened. It may be damaged or password-protected — try re-saving it and uploading again.",
