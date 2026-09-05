@@ -90,12 +90,25 @@ export function SetupForm({
   }
 
 
+  const wordCount = sourceText.trim() ? sourceText.trim().split(/\s+/).length : 0;
+  const emptyAfterExtraction = reviewNotice && !sourceText.trim();
+  const blocked = loading || extracting || emptyAfterExtraction;
+
   function submit(event: React.FormEvent) {
     event.preventDefault();
+    if (extracting) {
+      toast.error("Still reading your file", { description: "Give it a moment and try again." });
+      return;
+    }
+    if (emptyAfterExtraction) {
+      toast.error("The text is empty", { description: "Paste or restore the chapter text before starting." });
+      return;
+    }
     if (!topic.trim() && !sourceText.trim()) {
       toast.error("Tell me what to teach", { description: "Add a topic or upload your study material." });
       return;
     }
+
     onSubmit({
       topic: topic.trim(),
       sourceText: sourceText.trim(),
@@ -189,8 +202,10 @@ export function SetupForm({
               )}
 
               <span className="text-xs text-muted-foreground">
-                {sourceText.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} characters
+                {wordCount.toLocaleString()} words · {sourceText.length.toLocaleString()} /{" "}
+                {MAX_CHARS.toLocaleString()} characters
               </span>
+
             </div>
           </div>
         </CardContent>
