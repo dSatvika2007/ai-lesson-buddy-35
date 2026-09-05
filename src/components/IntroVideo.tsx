@@ -11,7 +11,7 @@ export function IntroVideo({ title }: { title?: string }) {
   const isFile = /\.(mp4|webm|ogg)(\?|$)/i.test(INTRO_VIDEO_URL);
 
   return (
-    <section aria-label="Lesson intro video" className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+    <section aria-label="Lesson intro video" className="mx-auto w-full max-w-2xl overflow-hidden rounded-2xl border bg-card shadow-sm">
       <div className="relative aspect-video w-full bg-secondary">
         {INTRO_VIDEO_URL ? (
           isFile ? (
