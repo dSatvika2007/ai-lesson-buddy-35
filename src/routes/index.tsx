@@ -9,6 +9,7 @@ import { IntroVideo } from "@/components/IntroVideo";
 import { QuizStage } from "@/components/QuizStage";
 import { ReportStage } from "@/components/ReportStage";
 import { SetupForm } from "@/components/SetupForm";
+import { TeacherAvatar } from "@/components/TeacherAvatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
